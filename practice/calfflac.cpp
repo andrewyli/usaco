@@ -1,0 +1,154 @@
+/*
+  PROB: calfflac
+  ID: andrewy3
+  LANG: C++
+*/
+
+/*---------------------
+  Current problem: when expanding boundaries must do simultaneously.
+*/
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int currentSize(const vector<char>& s)
+{
+    int size = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (isalpha(s[i]))
+            size++;
+    }
+    return size;
+}
+
+vector<char> splice(const vector<char>& v)
+{
+    vector<char> u;
+    int i = 0;
+    while (!isalpha(v[i]))
+    {
+        i++;
+    }
+    int j = 0;
+    while (!isalpha(v[v.size() - j - 1]))
+    {
+        j++;
+    }
+    for (int k = i; k < v.size() - j; k++)
+    {
+        u.push_back(v[k]);
+    }
+    return u;
+}
+
+int main()
+{
+    ifstream fin("calfflac.in");
+    ofstream fout("calfflac.out");
+    vector<char> input;
+    vector<char> cut;
+    char c;
+    fin >> noskipws;
+    while (fin >> c)
+    {
+        input.push_back(c);
+    }
+    int max_size = 0;
+    int max_pos = 0;
+    int i_2 = 0;
+    while (!isalpha(input[i_2]))
+    {
+        i_2++;
+    }
+    for (int i = i_2; i < input.size(); i++)
+    {
+        int j = 0; //left
+        int k = 0; //right
+        while (j <= i && k < input.size() - i)
+        {
+            if (!isalpha(input[i - j]) && !isalpha(input[i + k]))
+            {
+                j++;
+                k++;
+            }
+            else if (!isalpha(input[i + k]))
+                k++;
+            else if (!isalpha(input[i - j]))
+                j++;
+            else
+            {
+                if (tolower(input[i - j]) != tolower(input[i + k]))
+                {
+                    break;
+                }
+                else
+                {
+                    j++;
+                    k++;
+                }
+            }
+        }
+        vector<char> temp(input.begin() + i - j + 1, input.begin() + i + k);
+/*
+        for (int d = 0; d < temp.size(); d++)
+        {
+            cout << temp[d];
+        }
+        cout << "\n";
+*/
+        if (currentSize(temp) > max_size)
+        {
+            max_size = k + j - 1;
+            max_pos = i - j + 1;
+        }
+        /*
+        j = 0;
+        k = 0;
+        while (j <= i && k < input.size() - i - 1)
+        {
+            if (!isalpha(input[i - j]))
+                j++;
+            else if (!isalpha(input[i + k + 1]))
+                k++;
+            else
+            {
+                if (tolower(input[i - j]) != tolower(input[i + k + 1]))
+                {
+                    break;
+                }
+                else
+                {
+                    j++;
+                    k++;
+                }
+            }
+        }
+        vector<char> temp2(input.begin() + i - j + 1, input.begin() + i + k - 2);
+        if (currentSize(temp2) > max_size)
+        {
+            max_size = k + j - 2;
+            max_pos = i - j + 1;
+            }*/
+    }
+    cout << "Finished calculations." << '\n';
+    int alphacount = 0;
+    for (int i = max_pos; i < max_size + max_pos; i++)
+    {
+        cut.push_back(input[i]);
+        if (isalpha(input[i]))
+            alphacount++;
+    }
+    fout << alphacount << "\n";
+    cut = splice(cut);
+    for (int i = 0; i < cut.size(); i++)
+    {
+        fout << cut[i];
+        cout << cut[i];
+    }
+    cout << "\n";
+    fout << "\n";
+}

@@ -1,0 +1,130 @@
+/*
+ID: andrewy3
+LANG: C++
+PROB: beads
+*/
+
+#include<string>
+#include<iostream>
+#include<vector>
+#include<fstream>
+#include<algorithm>
+using namespace std;
+//hi
+int calcbeads(int, string);
+
+int main()
+{
+    ifstream in("beads.in");
+    ofstream out("beads.out");
+
+    int beadcount;
+    string beads;
+    in >> beadcount >> beads;
+    
+    int temp;
+    int total;
+    for (int i = 0; i < beadcount; i++)
+    {
+        temp = calcbeads(i, beads);
+        if (temp > total) total = temp;
+    }
+    out << total << endl;
+
+}
+//splits after the given index
+int calcbeads(int x, string s)
+{
+    int left = x;
+    int right = (x + 1) % s.length();
+    
+    int leftcount = 0;
+    int rightcount = 0;
+    int tempcount = 0;
+    char lefteval = s.at(left);
+    if (lefteval == 'r')
+    {
+        while (lefteval != 'b' && tempcount < s.length())
+        {
+            tempcount++;
+            if (left == 0) left = s.length() - 1;
+            else left--;
+            lefteval = s.at(left);
+        }
+        leftcount += tempcount;
+    }
+    else if (lefteval == 'b')
+    {
+        while (lefteval != 'r' && tempcount < s.length())
+        {
+            tempcount++;
+            if (left == 0) left = s.length() - 1;
+            else left--;
+            lefteval = s.at(left);
+        }
+        leftcount += tempcount;
+    }
+    else
+    {
+        int leftcount1 = 0;
+        int leftcount2 = 0;
+        while (lefteval != 'b' && leftcount1 < s.length())
+        {
+            leftcount1++;
+            if (left == 0) left = s.length() - 1;
+            else left--;
+            lefteval = s.at(left);
+        }
+        
+        while (lefteval != 'r' && leftcount2 < s.length())
+        {
+            leftcount2++;
+            if (left == 0) left = s.length() - 1;
+            else left--;
+            lefteval = s.at(left);
+        }
+        leftcount = max(leftcount1, leftcount2);
+    }
+    tempcount = 0;
+    char righteval = s.at(right);
+
+    if (righteval == 'r')
+    {
+        while (righteval != 'b' && tempcount < s.length())
+        {
+            tempcount++;
+            right = (right + 1) % s.length();
+            righteval = s.at(right);
+        }
+        rightcount += tempcount;
+    }
+    else if (righteval == 'b')
+    {
+        while (righteval != 'r' && tempcount < s.length())
+        {
+            tempcount++;
+            right = (right + 1) % s.length();
+            righteval = s.at(right);
+        }
+        rightcount += tempcount;
+    }
+    else
+    {
+        int rightcount1 = 0;
+        int rightcount2 = 0;
+        while (righteval != 'b' && rightcount1 < s.length())
+        {
+            rightcount1++;
+            right = (right + 1) % s.length();
+            righteval = s.at(right);
+        }
+        while (righteval != 'r' && rightcount2 < s.length())
+        {
+            rightcount2++;
+            right = (right + 1) % s.length();
+            righteval = s.at(right);
+        }
+        rightcount = max(rightcount1, rightcount2);
+    }
+    return (leftcount+rightcount <= s.length())?leftcount+rightcount:s.length();
+}

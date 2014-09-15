@@ -1,0 +1,66 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+class CowRange
+{
+public:
+    int left;
+    int right;
+    CowRange(int, int);
+};
+
+CowRange::CowRange(int a, int b)
+{
+    left = a;
+    right = b;
+}
+
+int main()
+{
+    fstream stream;
+    stream.open("milktemp.in", ios::in);
+    int n;
+    int x;
+    int y;
+    int z;
+    stream >> n; stream >> x; stream >> y; stream >> z;
+    
+    vector<CowRange> ranges;
+    int templeft = 0;
+    int tempright = 0;
+    for (int i = 0; i < n; i++)
+    {
+        stream >> templeft; stream >> tempright;
+        ranges.push_back(CowRange(templeft, tempright));
+    }
+    int maxright = 0;
+    for (int i = 0; i < ranges.size(); i++)
+    {
+        if (ranges[i].right > maxright) maxright = ranges[i].right;
+    }
+
+    int maxmilk = 0;
+    int totalmilk = 0;
+    for (int i = 0; i <= maxright + 1; i++)
+    {
+        for (int j = 0; j < ranges.size(); j++)
+        {
+            if (i < ranges[j].left)
+                totalmilk += x;
+            else if (ranges[j].left <= i  && i <= ranges[j].right)
+                totalmilk += y;
+            else if (ranges[j].right < i)
+                totalmilk += z;
+        }
+        if (totalmilk > maxmilk)
+            maxmilk = totalmilk;
+        cout << totalmilk;
+        totalmilk = 0;
+    }
+    stream.close();
+    stream.open("milktemp.out", ios::out);
+    stream << maxmilk << endl;
+    return 0;
+}

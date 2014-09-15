@@ -1,0 +1,65 @@
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    ifstream fin("slowdown.in");
+    ofstream fout("slowdown.out");
+    
+    int n;
+    fin >> n;
+
+    char buffer;
+    double value;
+    vector<double> times;
+    vector<double> distances;
+    for (int i = 0; i < n; i++)
+    {
+        fin >> buffer;
+        fin >> value;
+        if (buffer == 'T')
+            times.push_back(value);
+        else if (buffer == 'D')
+            distances.push_back(value);
+    }
+    sort(times.begin(), times.end());
+    sort(distances.begin(), distances.end());
+    
+    double currenttime = 0.0;
+    double currentdistance = 0.0;
+    double currentspeed = 1.0;
+    double speeddenom = 1.0;
+    while (!(currentdistance - 1000 < 0.0001 && currentdistance - 1000 > -0.0001))
+    {
+        //cout << "entered" << "\n";
+        if (distances.size() == 0)
+            distances.push_back(-1.0);
+        if (times.size() == 0)
+            times.push_back(-1.0);
+        if (currentdistance - distances[0] < 0.0001 && currentdistance - distances[0] > -0.0001)
+        {
+            speeddenom++;
+            currentspeed = 1.0/speeddenom;
+            distances.erase(distances.begin());
+            //cout << "matched" << "\n";
+        }
+        else if (currenttime - times[0] < 0.0001 && currenttime - times[0] > -0.0001)
+        {
+            speeddenom++;
+            currentspeed = 1.0/speeddenom;
+            times.erase(times.begin());
+            //cout << "matched2" << "\n"; 
+        }
+        else
+        {
+            currenttime += 1.0;
+            currentdistance += currentspeed;
+            //cout << "increased" << "\n";
+        }
+    }
+    fout << floor(currenttime+0.5) << "\n";
+}

@@ -1,0 +1,17 @@
+/*
+PROB: milk
+ID: andrewy3
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    ifstream fin("milk.in");
+    ofstream fout("milk.out");
+
+    
+}

@@ -1,0 +1,27 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+#define MAX_N 50000
+std::vector<std::pair<int, int> > v[MAX_N];
+
+int find_max(int l, int r)
+{
+    return 1;
+}
+
+int main()
+{
+    std::ifstream fin("crowded.in");
+    std::ofstream fout("crowded.out");
+    
+    int n, d;
+    fin >> n >> d;
+    int x;
+    int h;
+    for (int i = 0; i < n; i++)
+    {
+        fin >> x >> h;
+    }
+
+}

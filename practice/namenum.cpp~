@@ -1,0 +1,66 @@
+/*
+  ID: andrewy3
+  PROG: namenum
+  LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+using namespace std;
+
+string convert(const string&);
+
+int main()
+{
+    stringstream ss;
+    int count = 0;
+    while (ss.good() && count < 4617)
+    {
+
+        count++;
+    }
+    ifstream fin;
+    ofstream fout;
+    fin.open("namenum.in");
+    fout.open("namenum.out");
+    string code;
+    fin >> code;
+    
+    bool found = false;
+    string buffer;
+    int i = 0;
+    while (i < 4617)
+    {
+        if (convert(buffer) == code && code.length() == buffer.length())
+        {
+            fout << buffer << endl;
+            found = true;
+        }
+        i++;
+    }
+    
+    if (!found)
+    {
+        fout << "NONE" << endl;
+    }
+
+}
+
+string convert(const string& s)
+{
+    string result;
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] == 'Q' || s[i] == 'Z')
+            return "1";
+        if (s[i] < 'Q')
+        {
+            result += ((s[i] - 'A')/3) + '2';
+        }
+        else
+        {
+            result += ((s[i] - 'Q')/3) + '7';
+        }
+    }
+}

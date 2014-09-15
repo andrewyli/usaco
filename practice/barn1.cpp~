@@ -1,0 +1,25 @@
+/*
+PROB: barn1
+ID: andrewy3
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    ifstream fin("barn1.in");
+    ofstream fout("barn1.out");
+    
+    int m, s, c;
+    fin >> m >> s >> c;
+    
+    int stalls[s];
+
+    for (int i = 0; i < c; i++)
+    {
+        
+    }
+}

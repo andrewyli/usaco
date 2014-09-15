@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class AdjGroup
+{
+public:
+    vector<string> adjectives;
+    AdjGroup (vector<string>&);
+};
+
+AdjGroup::AdjGroup (vector<string> & v)
+{
+    adjectives = v;
+}
+
+int main()
+{
+    fstream stream;
+    stream.open("nocow.in", ios::in);
+    int n = 0;
+    int k = 0;
+    stream >> n; stream >> k;
+
+    vector<AdjGroup> adjectivegroups;
+    string word = "";
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        while (word.compare("cow.") != 0)
+        {
+            if (count > 4) {
+                adjectives.push_back(word);
+            }
+            count++;
+            stream >> word;
+        }
+        count = 0;
+        word = "";
+    }
+    for (int i = 0; i < adjectives.size(); i++)
+    {
+        cout << adjectives[i];
+    }
+    return 0;
+}

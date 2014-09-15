@@ -1,0 +1,48 @@
+/*
+LANG: C++
+ID: andrewy3
+PROB: crypt1
+*/
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> set;
+    ifstream fin("crypt1.in");
+    ofstream fout("crypt1.out");
+
+    int n;
+    fin >> n;
+    
+    int buffer;
+    for (int i = 0; i < n; i++)
+    {
+        fin >> buffer;
+        set.push_back(buffer);
+    }
+    int tri[3];
+    int bi[2];
+    int quad = 0;
+    int quad1 = 0;
+    int quad2 = 0;
+    int numsol = 0;
+    for (int i = 0; i < pow(n, 3); i++)
+    {
+        tri[0] = set[i%n]; tri[2] = set[(i/(n*n))%n]; tri[1] = set[(i/n)%n];
+        for (int j = 0; j < pow(set.size(), 2); j++)
+        {
+            bi[1] = set[((i/n)%n)]; bi[0] = set[i%n];
+            quad1 = tri[0]*bi[0] + tri[1]*bi[1]*10 + tri[2]*bi[1]*100;
+            quad2 = tri[0]*bi[1]*10 + tri[1]*bi[1]*100 + tri[2]*bi[1]*1000;
+            quad = quad1 + quad2;
+            if (quad1 > 99 && quad1 < 1000 && quad2 > 99 && quad2 < 1000 && quad < 10000 && quad >= 1000 && find(set.begin(), set.end(), quad % 10) != set.end() && find(set.begin(), set.end(), (quad/10) % 10) != set.end() && find(set.begin(), set.end(), (quad/100) % 10) != set.end() && find(set.begin(), set.end(), (quad/1000) % 10) != set.end())
+                numsol++;
+        }
+    }
+    fout << numsol << "\n";
+}
